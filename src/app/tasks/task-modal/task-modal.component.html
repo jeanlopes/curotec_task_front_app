@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Add New Task</h2>
+<mat-dialog-content>
+  <form #taskForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Enter task title" name="title" ngModel required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Enter task description" name="description" ngModel></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <mat-select name="status" ngModel required>
+        <mat-option [value]="0">Pending</mat-option>
+        <mat-option [value]="1">In Progress</mat-option>
+        <mat-option [value]="2">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox name="isCompleted" ngModel>Is Completed</mat-checkbox>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" [disabled]="!taskForm.valid" [mat-dialog-close]="taskForm.value">Save</button>
+</mat-dialog-actions>
