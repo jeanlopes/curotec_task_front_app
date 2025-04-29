@@ -9,7 +9,7 @@ import * as signalR from '@microsoft/signalr';
 })
 export class TasksService {
   private apiUrl = environment.API_URL; // Base API URL
-  private hubConnection!: signalR.HubConnection;
+  public hubConnection!: signalR.HubConnection;
 
   constructor(private http: HttpClient) {
     this.initializeSignalRConnection();
@@ -17,7 +17,7 @@ export class TasksService {
 
   private initializeSignalRConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.apiUrl}/hub`) // Replace '/hub' with your SignalR hub endpoint
+      .withUrl(`${this.apiUrl}/hub`)
       .withAutomaticReconnect()
       .build();
 
