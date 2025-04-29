@@ -1,0 +1,22 @@
+<div class="tasks-container">
+  <h1>Task List</h1>
+  <button mat-raised-button color="primary" (click)="openTaskModal()">Add Task</button>
+  <table mat-table [dataSource]="tasks" class="mat-elevation-z8">    
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let task"> {{task.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let task">
+        <button mat-icon-button color="warn" (click)="removeTask(task.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
