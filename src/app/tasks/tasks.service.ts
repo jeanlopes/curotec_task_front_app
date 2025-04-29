@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import * as signalR from '@microsoft/signalr';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TasksService {
   private apiUrl = environment.API_URL; // Base API URL
   public hubConnection!: signalR.HubConnection;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
     this.initializeSignalRConnection();
   }
 
@@ -35,17 +36,17 @@ export class TasksService {
   private registerSignalRHandlers(): void {
     this.hubConnection.on('TaskAdded', (task) => {
       console.log('Task added notification received:', task);
-      // Handle task added notification
+      this.snackBar.open('Task added in real-time', 'Close', { duration: 3000 });
     });
 
     this.hubConnection.on('TaskUpdated', (task) => {
       console.log('Task updated notification received:', task);
-      // Handle task updated notification
+      this.snackBar.open('Task updated in real-time', 'Close', { duration: 3000 });
     });
 
     this.hubConnection.on('TaskDeleted', (taskId) => {
       console.log('Task deleted notification received:', taskId);
-      // Handle task deleted notification
+      this.snackBar.open('Task deleted in real-time', 'Close', { duration: 3000 });
     });
   }
 
