@@ -1,29 +1,32 @@
 <h2 mat-dialog-title>Add New Task</h2>
 <mat-dialog-content>
-  <form #taskForm="ngForm">
+  <form [formGroup]="taskForm">
     <mat-form-field appearance="fill">
       <mat-label>Title</mat-label>
-      <input matInput placeholder="Enter task title" name="title" ngModel required />
+      <input matInput placeholder="Enter task title" formControlName="title" />
+      <mat-error *ngIf="taskForm.get('title')?.hasError('required')">Title is required</mat-error>
+      <mat-error *ngIf="taskForm.get('title')?.hasError('minlength')">Title must be at least 3 characters</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
-      <textarea matInput placeholder="Enter task description" name="description" ngModel></textarea>
+      <textarea matInput placeholder="Enter task description" formControlName="description"></textarea>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Status</mat-label>
-      <mat-select name="status" ngModel required>
+      <mat-select formControlName="status">
         <mat-option [value]="0">Pending</mat-option>
         <mat-option [value]="1">In Progress</mat-option>
         <mat-option [value]="2">Completed</mat-option>
       </mat-select>
+      <mat-error *ngIf="taskForm.get('status')?.hasError('required')">Status is required</mat-error>
     </mat-form-field>
 
-    <mat-checkbox name="isCompleted" ngModel>Is Completed</mat-checkbox>
+    <mat-checkbox formControlName="isCompleted">Is Completed</mat-checkbox>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button color="primary" [disabled]="!taskForm.valid" [mat-dialog-close]="taskForm.value">Save</button>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button color="primary" [disabled]="taskForm.invalid" (click)="save()">Save</button>
 </mat-dialog-actions>
