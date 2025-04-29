@@ -16,6 +16,7 @@ export class TasksComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTasks();
+    this.subscribeToRealTimeNotifications();
   }
 
   loadTasks(): void {
@@ -40,6 +41,23 @@ export class TasksComponent implements OnInit {
   removeTask(taskId: number): void {
     this.tasksService.deleteTask(taskId).subscribe(() => {
       this.loadTasks();
+    });
+  }
+
+  private subscribeToRealTimeNotifications(): void {
+    this.tasksService.hubConnection.on('TaskAdded', (task) => {
+      this.tasks.push(task);
+    });
+
+    this.tasksService.hubConnection.on('TaskUpdated', (updatedTask) => {
+      const index = this.tasks.findIndex(task => task.id === updatedTask.id);
+      if (index !== -1) {
+        this.tasks[index] = updatedTask;
+      }
+    });
+
+    this.tasksService.hubConnection.on('TaskDeleted', (taskId) => {
+      this.tasks = this.tasks.filter(task => task.id !== taskId);
     });
   }
 }
